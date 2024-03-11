@@ -1,0 +1,80 @@
+﻿@model JobListing.Models.Login
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<hr />
+<div class="row justify-content-center align-items-center">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">Login</div>
+            <div class="card-body">
+                <form asp-action="LoginUser" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control mb-3" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" class="form-control mb-3" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="submit" value="Login" class="btn btn-primary" />
+                    </div>
+                </form>
+@*                 <div class="form-group card-link">
+                    <a asp-action="Register" asp-controller="Account">Create an account?</a>
+                </div> *@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+@* @model JobListing.Models.Login
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="row justify-content-center align-items-center">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">Login</div>
+            <div class="card-body">
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, new { @class = "form-label" })
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control mb-3" })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group mb-3">
+                        @Html.LabelFor(model => model.Password, new { @class = "form-label" })
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control mb-3" })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="submit" value="Login" class="btn btn-primary">
+                    </div>
+                }
+                <div class="form-group card-link">
+                    <a asp-action="Register" asp-controller="Account">Create an account?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> *@

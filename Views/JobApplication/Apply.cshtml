@@ -1,0 +1,126 @@
+﻿ @model JobListing.Models.JobApplication
+ @* @model JobListing.ViewModel.ApplyViewModel *@
+
+@{
+    ViewData["Title"] = "JobApplication";
+}
+
+<hr />
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card-header">Apply</div>
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="ApplyForJob" asp-controller="JobApplication" enctype="multipart/form-data" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group mb-3">
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="ContactNumber" class="control-label"></label>
+                        <input asp-for="ContactNumber" class="form-control" />
+                        <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="DateOfBirth" class="control-label"></label>
+                        <input asp-for="DateOfBirth" class="form-control" />
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Gender" class="control-label"></label><br />
+                        <div class="form-check form-check-inline">
+                            <input type="radio" value="Male" asp-for="Gender" class="form-check-input" />Male
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" value="Female" asp-for="Gender" class="form-check-input" />Female
+                        </div>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="State" class="control-label"></label>
+                        <select id="state" asp-for="State" asp-items="new SelectList(Model.States, nameof(State.StateId), nameof(State.StateName))" class="form-control">
+                            <option>Select a state</option>
+                        </select>
+                        <span asp-validation-for="State" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3" id="drop_down_city">
+                        <label asp-for="City" class="control-label"></label>
+                        <select id="city" asp-for="City" asp-items="new SelectList(Model.Cities, nameof(City.CityId), nameof(City.CityName))" class="form-control">
+                            <option>Select a city</option>
+                        </select>
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Address" class="control-label"></label>
+                        <textarea asp-for="Address" class="form-control"></textarea>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="control-label">Area of Interest</label>
+                        <br/>
+                        @for(var index = 0; index<Model.AreaOfInterests.Count();index++)
+                        {
+                            <input type="checkbox" name="AreaOfInterest" class="form-check-input" value="@Model.AreaOfInterests[index].InterestName" />
+                            <label class="form-check-label me-2" asp-for="AreaOfInterest" >
+                                @Model.AreaOfInterests[index].InterestName
+                            </label>
+                            @* <input type="hidden" asp-for="@Model.AreaOfInterests[index].InterestId" />
+                            <input type="hidden" asp-for="@Model.AreaOfInterests[index].InterestName" /> *@
+                        }
+                        <span asp-validation-for="AreaOfInterests" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for = "Resume" class="control-label"></label>
+                        <input type="file" accept=".pdf" asp-for="Resume" class="form-control" />
+                        <span asp-validation-for="Resume" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@* 
+<div>
+    <a asp-action="Index">Back to List</a>
+</div> *@
+<script>
+    $(function () {
+        console.log("Function called");
+        $("#drop_down_city").hide();
+        $("#state").change(function () {
+            var stateId = $(this).val();
+            console.log(stateId);
+            $.ajax({
+                type: "GET",
+                url: "/city",
+                data: { StateId: stateId },
+                success: function (data) {
+                    $("#city").empty();
+                    $("#city").append($("<option />").val(0).text("Select a city"));
+                    $.each(data, function (i, item) {
+                        $("#city").append($("<option />").val(item.cityId).text(item.cityName));
+                        $("#drop_down_city").show();
+                    });
+                },
+            });
+        });
+    });
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

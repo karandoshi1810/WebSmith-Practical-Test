@@ -1,0 +1,83 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<JobListing.Models.JobApplication>;
+<div class="row">
+    <div class="col d-flex justify-content-end">
+        <a asp-action="Apply" asp-controller="JobApplication" class="btn btn-primary">Apply</a>
+    </div>
+</div>
+@if(ViewBag.NoApplications == true)
+{
+    <marquee direction="left" loop="">
+        <p>No applications done yet! Click on apply button below to apply for the job</p>
+    </marquee>
+}
+@if(TempData["IsAvailable"] == "true")
+{
+    <script>
+        alert("available");
+    </script>
+}
+else
+{
+    @foreach(var application in Model)
+    {
+        <div class="row mb-2 justify-content-center">
+            <div class="col-md-8 col-lg-8">
+                <div class="card">
+                    <div class="card-header">Application number:@application.ApplicationId</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                @application.FirstName  @application.LastName
+                            </div>
+                            <form method="post" asp-action="Delete" asp-controller="JobApplication" asp-route-id="@application.ApplicationId">
+                                <div class="col text-right form-check form-switch">
+                                    <a class="btn btn-primary mb-1" asp-action="Details" asp-controller="JobApplication" asp-route-id="@application.ApplicationId">Details</a>
+                                    <a class="btn btn-success mb-1" asp-action="Edit" asp-controller="JobApplication" asp-route-id="@application.ApplicationId">Edit</a>
+                                    <button class="btn btn-danger mb-1" type="submit" data-record-id="@application.ApplicationId" >Delete</button>
+                                    <input type="checkbox" class="form-check-input toggleSwitch" data-record-id="@application.ApplicationId" checked" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+<script type="text/javascript">
+    // function confirmDeletion(var applicationId, var firstName, var lastName) {
+    //     console.log("Function Called");
+    //     if (confirm("Are you sure you want to delete the account with application ID:", applicationId) == true) {
+    //         return true;
+    //     }
+    //     else {
+    //         return false;
+    //     }
+    // }
+    $(function () {
+        $(".toggleSwitch").change(function () {
+            var isChecked = $(this).prop('checked');
+            var recordId = $(this).data('record-id');
+
+            toggleStatus(recordId, isChecked);
+        })
+        function toggleStatus(applicationId,isChecked) {
+            console.log("status toggled");
+            return true;
+        }
+        $(".btn-danger").click(function () {
+            console.log($(this).data('record-id'));
+            if (confirm("Are you sure  you want to delete application with ID:"+ $(this).data('record-id')) == true) {
+                return true
+            }
+            else {
+                return false;
+            }
+        });
+    });
+</script>
