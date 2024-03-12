@@ -1,2 +1,2 @@
-/Karan/Tasks/JobListing/JobListing/WebSmith-Practical-Test/bin/
-/Karan/Tasks/JobListing/JobListing/WebSmith-Practical-Test/obj/*
+WebSmith-Practical-Test/bin/
+WebSmith-Practical-Test/obj/
